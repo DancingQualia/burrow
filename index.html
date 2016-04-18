@@ -1,0 +1,69 @@
+<html>
+	<title>Hello World!</title>
+	<body>
+		<h1>Hello World!</h1>
+		<p>Right click to show context menu.</p>
+		<script>
+			var win = nw.Window.get();
+			win.hide();
+
+			var contextMenu = new nw.Menu();
+
+			//Add menu items
+			contextMenu.append(new nw.MenuItem({
+				label: 'Item 1',
+				click: function(){
+					alert('You have clicked Item 1');
+				}
+			}));
+
+			contextMenu.append(new nw.MenuItem({ label : 'Item 2' }));
+			contextMenu.append(new nw.MenuItem({ type : 'separator' }));
+			contextMenu.append(new nw.MenuItem({ label : 'Item 3' }));
+
+			document.body.addEventListener('contextmenu', function(e){
+				e.preventDefault();
+				contextMenu.popup(e.x, e.y);
+
+				return false;
+			}, false);
+
+			// Create a tray icon
+			var tray = new nw.Tray({ 
+				title: 'Tray', 
+				icon: 'node-vpn.png',
+				click: function(e){
+					nw.win.show();
+				}
+			});
+
+			// Give it a menu
+			var menu = new nw.Menu();
+			menu.append(new nw.MenuItem({ type: 'checkbox', label: 'Libra' }));
+			menu.append(new nw.MenuItem({ type: 'separator'}));
+			menu.append(new nw.MenuItem({ 
+				type: 'normal', 
+				label: 'Open App Window...',
+				click: function(){
+					win.show();
+					win.showDevTools();
+				}
+			}));
+			menu.append(new nw.MenuItem({ 
+				type: 'normal', 
+				label: 'Quit',
+				click: function(){
+					win.close(true);
+				}
+			}));
+
+			tray.menu = menu;
+
+			win.on('close', function(){
+				win.hide();
+			})
+
+			tray.menu = menu;
+		</script>
+	</body>
+</html>
