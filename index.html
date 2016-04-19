@@ -1,5 +1,5 @@
 <html>
-	<title>Hello World!</title>
+	<title>Burrow OpenVPN client</title>
 	<body>
 		<h1>Hello World!</h1>
 		<p>Right click to show context menu.</p>
@@ -38,8 +38,22 @@
 			});
 
 			// Give it a menu
-			var menu = new nw.Menu();
-			menu.append(new nw.MenuItem({ type: 'checkbox', label: 'Libra' }));
+			var vpnNameList = ["IBM-GPS", "Libra", "cc-ibm-gps"];
+			var menu = new nw.Menu({
+				type: "menubar"
+			});
+			
+			var vpnMenu = new nw.Menu();
+			vpnNameList.forEach(function(vpnName){
+				vpnMenu.append(nw.MenuItem({ type: 'checkbox', label: vpnName }));
+			});
+
+			menu.append(new nw.MenuItem({ 
+				type: 'normal', 
+				label: "VPN Connections",
+				submenu: vpnMenu
+			}));
+			
 			menu.append(new nw.MenuItem({ type: 'separator'}));
 			menu.append(new nw.MenuItem({ 
 				type: 'normal', 
